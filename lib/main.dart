@@ -313,8 +313,8 @@ class Pointer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 40,
-      height: 40,
+      width: 60,
+      height: 60,
       decoration: BoxDecoration(
         color: Colors.white,
         shape: BoxShape.circle,
@@ -335,9 +335,9 @@ class PointerPainter extends CustomPainter {
       ..style = PaintingStyle.fill;
 
     final path = Path()
-      ..moveTo(size.width / 2, 0)
-      ..lineTo(size.width / 2 + 10, 15)
-      ..lineTo(size.width / 2 - 10, 15)
+      ..moveTo(size.width / 2, -10)
+      ..lineTo(size.width / 2 + 10, 20)
+      ..lineTo(size.width / 2 - 10, 20)
       ..close();
 
     canvas.drawPath(path, paint);
