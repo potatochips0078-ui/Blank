@@ -85,24 +85,23 @@ class _WheelPageState extends State<WheelPage> with TickerProviderStateMixin {
     
     const segmentAngle = 2 * pi / 6;
     
-    // 分析：
-    // 1. 扇形5是"没中"，它在转盘自身坐标系中的中间角度是: 5*segmentAngle + segmentAngle/2
-    // 2. 当转盘旋转了 angle 度时，扇形5在屏幕上的位置是: (5*segmentAngle + segmentAngle/2) + angle
-    // 3. 我们希望扇形5的中间正好在屏幕上方（3pi/2）
-    // 4. 所以: (5*segmentAngle + segmentAngle/2) + finalAngle ≡ 3pi/2 mod 2pi
-    // 5. 解得: finalAngle ≡ 3pi/2 - (5*segmentAngle + segmentAngle/2) mod 2pi
+    // "没中"是第6个扇形（索引5）
+    // 我们需要让指针停在这个扇形的中央
+    // 扇形5的范围是 5*segmentAngle 到 6*segmentAngle
+    // 中央位置是 5*segmentAngle + segmentAngle/2
     
-    final missMid = 5 * segmentAngle + segmentAngle / 2;
-    var desiredAngle = (3 * pi / 2 - missMid) % (2 * pi);
-    if (desiredAngle < 0) desiredAngle += 2 * pi;
+    const missIndex = 5;
+    final targetAngle = missIndex * segmentAngle + segmentAngle / 2;
     
     // 计算从当前角度到目标角度需要旋转多少
     final currentNorm = _currentAngle % (2 * pi);
-    var delta = desiredAngle - currentNorm;
-    if (delta < 0) delta += 2 * pi;
+    var delta = targetAngle - currentNorm;
+    if (delta < 0) {
+      delta += 2 * pi;
+    }
     
-    // 加上一圈让旋转更自然
-    final targetAngle = _currentAngle + delta + 2 * pi;
+    // 加上额外的几圈让旋转更自然
+    final targetFinal = _currentAngle + delta + 2 * pi;
     
     _stopController = AnimationController(
       duration: const Duration(milliseconds: 1500),
@@ -111,7 +110,7 @@ class _WheelPageState extends State<WheelPage> with TickerProviderStateMixin {
     
     _stopAnimation = Tween<double>(
       begin: _currentAngle,
-      end: targetAngle,
+      end: targetFinal,
     ).animate(CurvedAnimation(
       parent: _stopController!,
       curve: Curves.easeOutCubic,
@@ -146,14 +145,28 @@ class _WheelPageState extends State<WheelPage> with TickerProviderStateMixin {
             Stack(
               alignment: Alignment.center,
               children: [
+                const FortuneWheel(
+                  prizes: [
+                    '手机',
+                    '钞票',
+                    '奔驰',
+                    '金条',
+                    '金表',
+                    '没中',
+                  ],
+                  colors: [
+                    Color(0xFFFF6B6B),
+                    Color(0xFF4ECDC4),
+                    Color(0xFFFFE66D),
+                    Color(0xFF95E1D3),
+                    Color(0xFFF38181),
+                    Color(0xFFAA96DA),
+                  ],
+                ),
                 Transform.rotate(
                   angle: _currentAngle,
-                  child: FortuneWheel(
-                    prizes: _prizes,
-                    colors: _colors,
-                  ),
+                  child: const Pointer(),
                 ),
-                const Pointer(),
               ],
             ),
             const SizedBox(height: 50),
