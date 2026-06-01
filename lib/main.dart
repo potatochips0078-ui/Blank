@@ -89,9 +89,10 @@ class _WheelPageState extends State<WheelPage> with TickerProviderStateMixin {
     // 我们需要让指针停在这个扇形的中央
     // 扇形5的范围是 5*segmentAngle 到 6*segmentAngle
     // 中央位置是 5*segmentAngle + segmentAngle/2
+    // 再顺时针多90度（减去 pi/2）
     
     const missIndex = 5;
-    final targetAngle = missIndex * segmentAngle + segmentAngle / 2;
+    final targetAngle = missIndex * segmentAngle + segmentAngle / 2 - pi / 2;
     
     // 计算从当前角度到目标角度需要旋转多少
     final currentNorm = _currentAngle % (2 * pi);
@@ -313,8 +314,8 @@ class Pointer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 80,
-      height: 80,
+      width: 100,
+      height: 100,
       decoration: BoxDecoration(
         color: Colors.white,
         shape: BoxShape.circle,
@@ -335,9 +336,9 @@ class PointerPainter extends CustomPainter {
       ..style = PaintingStyle.fill;
 
     final path = Path()
-      ..moveTo(size.width / 2, -20)
-      ..lineTo(size.width / 2 + 12, 25)
-      ..lineTo(size.width / 2 - 12, 25)
+      ..moveTo(size.width / 2, -30)
+      ..lineTo(size.width / 2 + 14, 30)
+      ..lineTo(size.width / 2 - 14, 30)
       ..close();
 
     canvas.drawPath(path, paint);
