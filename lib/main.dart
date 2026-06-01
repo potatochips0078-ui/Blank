@@ -89,10 +89,10 @@ class _WheelPageState extends State<WheelPage> with TickerProviderStateMixin {
     // 我们需要让指针停在这个扇形的中央
     // 扇形5的范围是 5*segmentAngle 到 6*segmentAngle
     // 中央位置是 5*segmentAngle + segmentAngle/2
-    // 再顺时针多90度（减去 pi/2）
+    // 再逆时针多90度（加上 pi/2）
     
     const missIndex = 5;
-    final targetAngle = missIndex * segmentAngle + segmentAngle / 2 - pi / 2;
+    final targetAngle = missIndex * segmentAngle + segmentAngle / 2 + pi / 2;
     
     // 计算从当前角度到目标角度需要旋转多少
     final currentNorm = _currentAngle % (2 * pi);
