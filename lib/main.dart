@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 void main() {
   runApp(const MyApp());
@@ -35,6 +36,7 @@ class _WheelPageState extends State<WheelPage> with TickerProviderStateMixin {
   Animation<double>? _stopAnimation;
   bool _isSpinning = false;
   double _currentAngle = 0;
+  final AudioPlayer _audioPlayer = AudioPlayer();
 
   final List<String> _prizes = [
     '手机',
@@ -58,16 +60,20 @@ class _WheelPageState extends State<WheelPage> with TickerProviderStateMixin {
   void dispose() {
     _spinTimer?.cancel();
     _stopController?.dispose();
+    _audioPlayer.dispose();
     super.dispose();
   }
 
   void _startSpin() {
     if (_isSpinning) return;
-    
+
     setState(() {
       _isSpinning = true;
     });
-    
+
+    // 播放开始音频
+    _audioPlayer.play(AssetSource('start.mp3'));
+
     _spinTimer = Timer.periodic(const Duration(milliseconds: 16), (timer) {
       setState(() {
         _currentAngle += 0.5;
@@ -80,39 +86,42 @@ class _WheelPageState extends State<WheelPage> with TickerProviderStateMixin {
 
   void _stopOnMiss() {
     if (!_isSpinning) return;
-    
+
     _spinTimer?.cancel();
-    
+
+    // 播放停止音频
+    _audioPlayer.play(AssetSource('stop.mp3'));
+
     const segmentAngle = 2 * pi / 6;
-    
+
     // 95%概率停在"没中"，5%概率随机停在其他位置
     final random = Random();
     int targetIndex = 5; // 默认是"没中"
-    
+
     if (random.nextDouble() < 0.05) {
       // 5%概率随机选择其他位置（0-4）
       targetIndex = random.nextInt(5);
     }
-    
+
     // 计算目标扇形的中央位置
     // 再逆时针多90度（加上 pi/2）
     final targetAngle = targetIndex * segmentAngle + segmentAngle / 2 + pi / 2;
-    
+
     // 计算从当前角度到目标角度需要旋转多少
     final currentNorm = _currentAngle % (2 * pi);
     var delta = targetAngle - currentNorm;
     if (delta < 0) {
       delta += 2 * pi;
     }
-    
+
     // 加上额外的几圈让旋转更自然
     final targetFinal = _currentAngle + delta + 2 * pi;
-    
+
     _stopController = AnimationController(
       duration: const Duration(milliseconds: 1500),
       vsync: this,
     );
-    
+
     _stopAnimation = Tween<double>(
       begin: _currentAngle,
       end: targetFinal,
@@ -130,9 +139,14 @@ class _WheelPageState extends State<WheelPage> with TickerProviderStateMixin {
           setState(() {
             _isSpinning = false;
           });
+
+          // 如果停在"没中"上，播放对应的音频
+          if (targetIndex == 5) {
+            _audioPlayer.play(AssetSource('lose.mp3'));
+          }
         }
       });
-    
+
     _stopController!.forward();
   }
 
@@ -284,7 +298,8 @@ class WheelPainter extends CustomPainter {
       );
 
       canvas.save();
-      canvas.translate(textOffset.dx + textPainter.width / 2, textOffset.dy + textPainter.height / 2);
+      canvas.translate(textOffset.dx + textPainter.width / 2,
+          textOffset.dy + textPainter.height / 2);
       canvas.rotate(angle + pi / 2);
       canvas.translate(-textPainter.width / 2, -textPainter.height / 2);
       textPainter.paint(canvas, Offset.zero);
