@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>小组 Flutter Web 展示页面</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      background-color: #f5f7fa;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px 16px;
+    }
+
+    /* 标题区 */
+    .page-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    /* 卡片通用样式 */
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 24px 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+
+    .card-title {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    /* 主展示卡片 */
+    .hero-card {
+      text-align: center;
+    }
+
+    .hero-card h2 {
+      font-size: 19px;
+      font-weight: 800;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+
+    .hero-card p {
+      font-size: 14px;
+      color: #666;
+    }
+
+    /* 分区标题 */
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    /* 成员列表 */
+    .member-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .member-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: #f8f9fb;
+      border-radius: 10px;
+      padding: 14px 16px;
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 15px;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .avatar.k { background: #4a90d9; }
+    .avatar.a { background: #e8b84a; }
+    .avatar.b { background: #5eb85f; }
+    .avatar.c { background: #d94a8c; }
+
+    .member-info h3 {
+      font-size: 14.5px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .member-info p {
+      font-size: 13px;
+      color: #666;
+      line-height: 1.5;
+    }
+
+    /* 功能列表 */
+    .feature-list {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .feature-list li {
+      position: relative;
+      padding-left: 16px;
+      font-size: 14.5px;
+      margin-bottom: 8px;
+      line-height: 1.55;
+    }
+
+    .feature-list li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: #333;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <h1 class="page-title">小组 Flutter Web 展示页面</h1>
+
+    <!-- 项目介绍 -->
+    <div class="card hero-card">
+      <h2>校园活动展示平台</h2>
+      <p>用 Flutter Web 展示我们的项目创意与协作过程</p>
+    </div>
+
+    <!-- 小组成员与分工 -->
+    <div class="card">
+      <h2 class="section-title">小组成员与分工</h2>
+      <div class="member-list">
+        <div class="member-item">
+          <div class="avatar k">K</div>
+          <div class="member-info">
+            <h3>组长：奚煜翔</h3>
+            <p>创建仓库、维护 main 分支、审核 PR、发布 GitHhub Pages</p>
+          </div>
+        </div>
+        <div class="member-item">
+          <div class="avatar a">A</div>
+          <div class="member-info">
+            <h3>组员 A：XXX</h3>
+            <p>修改首页标题和项目口号，补充成员介绍卡片</p>
+          </div>
+        </div>
+        <div class="member-item">
+          <div class="avatar b">B</div>
+          <div class="member-info">
+            <h3>组员 B：XXX</h3>
+            <p>补充项目功能列表</p>
+          </div>
+        </div>
+        <div class="member-item">
+          <div class="avatar c">C</div>
+          <div class="member-info">
+            <h3>组员 C：XXX</h3>
+            <p>补充发布说明和访问地址</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 项目功能 -->
+    <div class="card">
+      <h2 class="section-title">项目功能</h2>
+      <ul class="feature-list">
+        <li>展示小组项目主题和核心亮点</li>
+        <li>展示成员姓名、角色和任务分工</li>
+        <li>记录每位组员通过 Pull Request 完成的修改</li>
+        <li>使用 GitHub Pages 发布 Flutter Web 静态页面</li>
+      </ul>
+    </div>
+
+    <!-- 发布说明 -->
+    <div class="card">
+      <h2 class="section-title">发布说明</h2>
+      <ul class="feature-list">
+        <li>源代码统一维护在 main 分支，所有组员修改都通过 PR 合并。</li>
+        <li>组长使用 flutter build web 生成静态网页文件。</li>
+        <li>构建产物发布到 gh-pages 分支，并由 GitHub Pages 对外访问。</li>
+        <li>访问地址格式：https://ss8w7hu.github.io/group-flutter-pages-demo/</li>
+      </ul>
+    </div>
+
+  </div>
+</body>
+</html>
