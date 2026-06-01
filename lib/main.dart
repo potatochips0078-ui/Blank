@@ -85,14 +85,18 @@ class _WheelPageState extends State<WheelPage> with TickerProviderStateMixin {
     
     const segmentAngle = 2 * pi / 6;
     
-    // "没中"是第6个扇形（索引5）
-    // 我们需要让指针停在这个扇形的中央
-    // 扇形5的范围是 5*segmentAngle 到 6*segmentAngle
-    // 中央位置是 5*segmentAngle + segmentAngle/2
-    // 再逆时针多90度（加上 pi/2）
+    // 95%概率停在"没中"，5%概率随机停在其他位置
+    final random = Random();
+    int targetIndex = 5; // 默认是"没中"
     
-    const missIndex = 5;
-    final targetAngle = missIndex * segmentAngle + segmentAngle / 2 + pi / 2;
+    if (random.nextDouble() < 0.05) {
+      // 5%概率随机选择其他位置（0-4）
+      targetIndex = random.nextInt(5);
+    }
+    
+    // 计算目标扇形的中央位置
+    // 再逆时针多90度（加上 pi/2）
+    final targetAngle = targetIndex * segmentAngle + segmentAngle / 2 + pi / 2;
     
     // 计算从当前角度到目标角度需要旋转多少
     final currentNorm = _currentAngle % (2 * pi);
