@@ -70,7 +70,7 @@ class _WheelPageState extends State<WheelPage> with TickerProviderStateMixin {
     
     _spinTimer = Timer.periodic(const Duration(milliseconds: 16), (timer) {
       setState(() {
-        _currentAngle += 0.15;
+        _currentAngle += 0.5;
         if (_currentAngle >= 2 * pi) {
           _currentAngle -= 2 * pi;
         }
